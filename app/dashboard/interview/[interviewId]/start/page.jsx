@@ -27,10 +27,20 @@ const StartInterview = ({ params }) => {
         .from(MockInterview)
         .where(eq(MockInterview.mockId, interviewId))
 
-      const jsonMockResponse = result[0].jsonMockResp
-      setInterviewQuestions(jsonMockResponse)
+      const raw = result[0].jsonMockResp
+      let parsedQuestions = []
+
+      try {
+        const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw
+        parsedQuestions = Array.isArray(parsed) ? parsed : Object.values(parsed)
+      } catch (e) {
+        console.error("Failed to parse jsonMockResp:", e)
+      }
+
+      setInterviewQuestions(parsedQuestions)
       setInterviewDetails(result[0])
     }
+
 
     getInterviewDetails()
   }, [interviewId])
@@ -46,7 +56,7 @@ const StartInterview = ({ params }) => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-zinc-50 dark:bg-zinc-900">
-      
+
       {/* Sidebar - Question Navigation */}
       <aside className="w-full md:w-1/4 border-r border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 p-6 shadow-md">
         <h2 className="text-xl font-bold text-zinc-800 dark:text-zinc-100 mb-6">
