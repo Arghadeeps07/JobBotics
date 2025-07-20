@@ -28,20 +28,12 @@ const StartInterview = ({ params }) => {
         .where(eq(MockInterview.mockId, interviewId))
 
       const raw = result[0].jsonMockResp
-      let parsedQuestions = []
-
-      try {
-        const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw
-        parsedQuestions = Array.isArray(parsed) ? parsed : Object.values(parsed)
-      } catch (e) {
-        console.error("Failed to parse jsonMockResp:", e)
-      }
+      const parsedQuestions = Array.isArray(raw) ? raw : Object.values(raw)
 
       setInterviewQuestions(parsedQuestions)
       setInterviewDetails(result[0])
     }
-
-
+    
     getInterviewDetails()
   }, [interviewId])
 
