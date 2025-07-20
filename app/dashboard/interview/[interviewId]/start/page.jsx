@@ -21,19 +21,19 @@ const StartInterview = ({ params }) => {
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0)
 
   useEffect(() => {
+    
+
     const getInterviewDetails = async () => {
       const result = await db
         .select()
         .from(MockInterview)
         .where(eq(MockInterview.mockId, interviewId))
 
-      const raw = result[0].jsonMockResp
-      const parsedQuestions = Array.isArray(raw) ? raw : Object.values(raw)
-
-      setInterviewQuestions(parsedQuestions)
+      const jsonMockResponse = result[0].jsonMockResp
+      setInterviewQuestions(jsonMockResponse)
       setInterviewDetails(result[0])
     }
-    
+
     getInterviewDetails()
   }, [interviewId])
 
