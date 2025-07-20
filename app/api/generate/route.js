@@ -19,12 +19,13 @@ export async function POST(request) {
     });
 
     const finalResponse = text.replace("```json", "").replace("```", "");
-    console.log(finalResponse);
+    const jsonFinalResponse = JSON.parse(finalResponse)
+    console.log(jsonFinalResponse);
 
     const dbResponse = await db
       .insert(MockInterview)
       .values({
-        jsonMockResp: finalResponse,
+        jsonMockResp: jsonFinalResponse,
         jobPosition: jobrole,
         jobDesc: jobDescription,
         jobExperience: yearsOfExperience,
