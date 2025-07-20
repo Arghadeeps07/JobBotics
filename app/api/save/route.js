@@ -2,43 +2,40 @@ import { generateText } from "ai";
 import { google } from "@ai-sdk/google";
 import { NextResponse } from "next/server";
 import { db } from "@/utils/db";
-import { MockInterview } from "@/utils/schema";
-import { v4 as uuidv4 } from "uuid";
+import { MockInterview, UserAnswer } from "@/utils/schema";
 import { currentUser } from "@clerk/nextjs/server";
 import moment from "moment/moment";
 
 export async function POST(request) {
-  const { prompt, jobrole, jobDescription, yearsOfExperience } =
-    await request.json();
+  const { question, answer, transcript, mockId } = await request.json();
   const user = await currentUser();
+  const feedbackPrompt = `Question:${question} Answer:${answer} User Answer:${transcript} based on the actual ans the ans the user ans give the rating to the user based on 10 also give the feedback as the area of improvement if any in just 3-5 lines in JSON format `;
 
   try {
     const { text } = await generateText({
       model: google("gemini-2.5-flash"),
-      prompt: prompt,
+      prompt: feedbackPrompt,
     });
 
     const finalResponse = text.replace("```json", "").replace("```", "");
-    console.log(finalResponse);
+    const jsonResponse = JSON.parse(finalResponse);
 
     const dbResponse = await db
-      .insert(MockInterview)
+      .insert(UserAnswer)
       .values({
-        jsonMockResp: finalResponse,
-        jobPosition: jobrole,
-        jobDesc: jobDescription,
-        jobExperience: yearsOfExperience,
-        createdBy: user?.emailAddresses[0]?.emailAddress,
+        mockId: mockId,
+        question: question,
+        correctAns: answer,
+        userAns: transcript,
+        feedback: jsonResponse?.feedback,
+        rating: jsonResponse?.rating,
+        userEmail: user?.emailAddresses[0]?.emailAddress,
         createdAt: moment().format("DD-MM-YYYY"),
-        mockId: uuidv4(),
       })
       .returning({ mockId: MockInterview.mockId });
 
-    console.log("Inserted ID:", dbResponse);
-    const mockId = dbResponse[0]?.mockId;
-
     return NextResponse.json(
-      { output: finalResponse, mockId: mockId },
+      { output: jsonResponse, res: dbResponse },
       {
         status: 200,
         headers: { "Content-Type": "application/json" },

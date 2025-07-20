@@ -16,6 +16,8 @@ import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
 import axios from 'axios';
 import { LoaderCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
 
 
 
@@ -25,6 +27,10 @@ const AddNewInterview = () => {
     const [jobDescription, setJobDescription] = useState('');
     const [yearsOfExperience, setYearsOfExperience] = useState('');
     const [loading, setLoading] = useState(false)
+    const [jsonResponse, setJsonResponse] = useState("")
+    const router = useRouter();
+
+
 
     const onSubmit = async (e) => {
         setLoading(true)
@@ -38,14 +44,31 @@ const AddNewInterview = () => {
 
         const InputPrompt = `Generate five  ${jobrole} interview questions and answers for a ${jobDescription} with ${yearsOfExperience} years of experience. The output should be in JSON format with the fields "question" and "answer".`;
         console.log(InputPrompt);
-        const res = await axios.post('/api/generate', { prompt: InputPrompt });
-        const response = res.data.output;
-        const finalResponse = response.replace('```json', '').replace('```', '')
-        console.log(JSON.parse(finalResponse));
-        setLoading(false)
+        try {
+            const res = await axios.post('/api/generate', {
+                prompt: InputPrompt,
+                jobrole,
+                jobDescription,
+                yearsOfExperience
+            });
+            const response = res.data.output;
+            const mockId = res.data.mockId
+            setJsonResponse(response);
+            console.log(mockId);
+
+            if (response) {
+                setLoading(false)
+                setOpenDialog(false);
+                router.push(`/dashboard/interview/${mockId}`)
+            }
 
 
-        setOpenDialog(false); // Close dialog after submission
+        } catch (error) {
+            console.error("Error in inderting the docucent in the database", error);
+
+        }
+
+        // Close dialog after submission
     }
 
     const cancelButton = () => {
@@ -71,20 +94,20 @@ const AddNewInterview = () => {
                         </AlertDialogTitle>
                         <AlertDialogDescription asChild>
                             <form className="space-y-5 mt-4" onSubmit={onSubmit}>
-                                <div>
+                                <div className='text-black'>
                                     <label className="block font-medium mb-1">Job Role / Position</label>
                                     <Input placeholder='e.g. Software Engineer' required
                                         onChange={(e) => setJobRole(e.target.value)} />
                                 </div>
 
-                                <div>
+                                <div className='text-black'>
                                     <label className="block font-medium mb-1">Job Description / Tech Stack</label>
                                     <Textarea placeholder='e.g. React, Node.js, Angular' rows={4} required
                                         onChange={(e) => setJobDescription(e.target.value)}
                                     />
                                 </div>
 
-                                <div>
+                                <div className='text-black'>
                                     <label className="block font-medium mb-1">Years of Experience</label>
                                     <Input placeholder='e.g. 3' type="number" min={0} max={50} required
                                         onChange={(e) => setYearsOfExperience(e.target.value)} />
