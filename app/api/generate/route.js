@@ -19,7 +19,20 @@ export async function POST(request) {
     });
 
     const finalResponse = text.replace("```json", "").replace("```", "");
-    const jsonFinalResponse = JSON.parse(finalResponse)
+    let jsonFinalResponse;
+    try {
+      jsonFinalResponse = JSON.parse(finalResponse);
+    } catch (jsonError) {
+      console.error("JSON parsing error:", jsonError.message);
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Gemini returned invalid JSON.",
+          raw: cleanedText,
+        },
+        { status: 400 }
+      );
+    }
     console.log(jsonFinalResponse);
 
     const dbResponse = await db

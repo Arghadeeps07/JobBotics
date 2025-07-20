@@ -42,7 +42,9 @@ const AddNewInterview = () => {
             yearsOfExperience
         });
 
-        const InputPrompt = `Generate five  ${jobrole} interview questions and answers for a ${jobDescription} with ${yearsOfExperience} years of experience. The output should be in JSON format with the fields "question" and "answer".`;
+        const InputPrompt = `Generate exactly 5 ${jobrole} interview questions and answers for a ${jobDescription} role with ${yearsOfExperience} years of experience.
+Output ONLY valid JSON (no explanation or formatting).
+Each object must have two keys: "question" and "answer".`;
         console.log(InputPrompt);
         try {
             const res = await axios.post('/api/generate', {
