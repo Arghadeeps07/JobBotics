@@ -14,11 +14,14 @@ const RecordAnswerSection = ({ questions, activeIndex, interviewDetails }) => {
     const [status, setStatus] = useState(false)
     const [loading, setLoading] = useState(false);
     const [transcript, setTranscript] = useState('')
+    const [recordingKey, setRecordingKey] = useState(0);
+
     const {
         error,
         interimResult,
         isRecording,
         results,
+        setResults,
         startSpeechToText,
         stopSpeechToText,
     } = useSpeechToText({
@@ -47,28 +50,38 @@ const RecordAnswerSection = ({ questions, activeIndex, interviewDetails }) => {
     const saveUserAnswer = async () => {
         setLoading(true);
         stopSpeechToText();
+
         if (transcript?.length < 7) {
-            toast.error("Error while saving the ans. Please try again")
-            setLoading(false)
+            toast.error("Error while saving the answer. Please try again");
+            setLoading(false);
             return;
         }
-        const mockId = interviewDetails?.mockId
-        const question = questions[activeIndex]?.question
-        const answer = questions[activeIndex]?.answer
 
+        const mockId = interviewDetails?.mockId;
+        const question = questions[activeIndex]?.question;
+        const answer = questions[activeIndex]?.answer;
 
-        const res = await axios.post('/api/save', {
-            question, answer, transcript, mockId
-        });
+        try {
+            const res = await axios.post('/api/save', {
+                question,
+                answer,
+                transcript,
+                mockId,
+            });
 
-        const response = res.data.output;
-        console.log(response);
-        if (res) {
-            toast("Your ans is successfully saved")
+            if (res?.status === 200) {
+                toast.success("Your answer has been saved");
+                setTranscript("");
+                setResults([])
+                setRecordingKey(prev => prev + 1); 
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error("Something went wrong");
         }
-        setLoading(false)
 
-    }
+        setLoading(false);
+    };
 
     return (
         <div className="max-w-xl w-full mx-auto mt-10 px-6 py-8 bg-white dark:bg-zinc-900 rounded-2xl shadow-lg transition-all space-y-6 border border-zinc-200 dark:border-zinc-800">

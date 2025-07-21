@@ -28,7 +28,6 @@ export async function POST(request) {
         {
           success: false,
           message: "Gemini returned invalid JSON.",
-          raw: cleanedText,
         },
         { status: 400 }
       );
