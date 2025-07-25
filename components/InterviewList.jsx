@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Loader2, Briefcase, Calendar, Mail } from 'lucide-react'
 import Link from 'next/link'
+import { Button } from './ui/button'
 
 const InterviewList = () => {
     const { user, isLoaded } = useUser()
@@ -51,35 +52,44 @@ const InterviewList = () => {
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                     {interviewList.map((interview, index) => (
-                        <Link  key={interview.id} href={`/dashboard/interview/${interview.mockId}/feedback` }>
-                            <Card key={interview.id} className="transition-shadow hover:shadow-xl">
-                                <CardHeader>
-                                    <CardTitle className="flex items-center gap-2">
-                                        <Briefcase className="w-5 h-5 text-blue-600" />
-                                        {interview.jobPosition}
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent className="space-y-3">
-                                    <div className="text-sm text-muted-foreground line-clamp-3">
-                                        {interview.jobDesc}
-                                    </div>
+
+                        <Card key={interview.id} className="transition-shadow hover:shadow-xl">
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Briefcase className="w-5 h-5 text-blue-600" />
+                                    {interview.jobPosition}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                                <div className="text-sm text-muted-foreground line-clamp-3">
+                                    {interview.jobDesc}
+                                </div>
 
 
 
-                                    <div className="flex justify-between text-xs text-muted-foreground">
-                                        <span className="flex items-center gap-1">
-                                            <Calendar className="w-4 h-4" />
-                                            {interview.createdAt}
-                                        </span>
-                                        <Badge variant="outline">{interview.jobExperience} exp</Badge>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </Link>
+                                <div className="flex justify-between text-xs text-muted-foreground">
+                                    <span className="flex items-center gap-1">
+                                        <Calendar className="w-4 h-4" />
+                                        {interview.createdAt}
+                                    </span>
+                                    <Badge variant="outline">{interview.jobExperience} exp </Badge>
+                                </div>
+                                <div className="flex justify-end gap-2">
+                                    <Link href={`dashboard/interview/${interview.mockId}/feedback`}>
+                                        <Button variant="outline" size="sm">Feedback</Button>
+                                    </Link>
+                                    <Link href={`dashboard/interview/${interview.mockId}`}>
+                                        <Button className="bg-blue-900" variant="default" size="sm">Interview</Button>
+                                    </Link>
+                                </div>
+                            </CardContent>
+                        </Card>
+
                     ))}
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     )
 }
 
