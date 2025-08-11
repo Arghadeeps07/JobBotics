@@ -42,7 +42,7 @@ export default function Navbar() {
                 ${path === '/dashboard' ? ' md:bg-transparent md:text-blue-700 font-bold' : 'text-gray-700'}`
               }>Dashboard</Link>
             </li>
-            <li>
+{/*             <li>
                <Link href="/" className={`block py-2 px-3  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
                 ${path === '/dashboard/questions' ? ' md:bg-transparent md:text-blue-700 font-bold' : 'text-gray-700'}`
               }>Questions</Link>
@@ -56,7 +56,7 @@ export default function Navbar() {
                <Link href="/" className={`block py-2 px-3  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
                 ${path === '/dashboard/how-it-works' ? ' md:bg-transparent md:text-blue-700 font-bold' : 'text-gray-700'}`
               }>How it works</Link>
-            </li>
+            </li> */}
             
           </ul>
         </div>
