@@ -42,12 +42,12 @@ export default function Navbar() {
                 ${path === '/dashboard' ? ' md:bg-transparent md:text-blue-700 font-bold' : 'text-gray-700'}`
               }>Dashboard</Link>
             </li>
-{/*             <li>
-               <Link href="/" className={`block py-2 px-3  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
-                ${path === '/dashboard/questions' ? ' md:bg-transparent md:text-blue-700 font-bold' : 'text-gray-700'}`
-              }>Questions</Link>
-            </li>
             <li>
+               <Link href='/dashboard/notes' className={`block py-2 px-3  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
+                ${path === '/dashboard/notes' ? ' md:bg-transparent md:text-blue-700 font-bold' : 'text-gray-700'}`
+              }>Notes</Link>
+            </li>
+            {/* <li>
                <Link href="/" className={`block py-2 px-3  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500
                 ${path === '/dashboard/upgrade' ? ' md:bg-transparent md:text-blue-700 font-bold' : 'text-gray-700'}`
               }>Upgrade</Link>
