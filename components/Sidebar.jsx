@@ -7,6 +7,7 @@ import {
   Settings,
   PlusCircle,
 } from "lucide-react";
+import Link from "next/link";
 
 const Sidebar = () => {
   return (
@@ -14,10 +15,12 @@ const Sidebar = () => {
       
       {/* Create New Button */}
       <div className="p-4 border-b border-gray-200">
+        <Link href="/create">
         <button className="flex items-center gap-2 w-full bg-blue-600 hover:bg-blue-900 cursor-pointer text-white px-3 py-2 rounded-md transition">
           <PlusCircle size={18} />
           <span>Create New</span>
         </button>
+        </Link>
       </div>
 
       {/* Navigation */}

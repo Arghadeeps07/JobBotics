@@ -1,3 +1,4 @@
+import { inngest } from "@/inngest/client";
 import { db } from "@/utils/db";
 import { studyMeteriaTable } from "@/utils/schema";
 import { google } from "@ai-sdk/google";
@@ -46,7 +47,16 @@ No circular references, no functions.
       topic: title,
       courseLayout: JSON.stringify(jsonFinalResponse),
     })
-    .returning({ id: studyMeteriaTable.createdBy });
+    .returning({ resp: studyMeteriaTable });
+
+    const result = await inngest.send({
+      name:'notes.generate',
+      data:{
+        course:dbResult[0].resp
+      }
+    });
+    console.log(result);
+    
 
   return NextResponse.json({ result: dbResult[0] });
 }

@@ -13,3 +13,14 @@ export async function POST(req) {
 
   return NextResponse.json({result:result});
 }
+
+export async function GET(req) {
+  const requrl = req.url;
+  const {searchParams} = new URL(requrl);
+  const courseId = searchParams?.get('courseId');
+
+  const course = await db.select().from(studyMeteriaTable)
+  .where(eq(studyMeteriaTable?.courseId, courseId));
+
+  return NextResponse.json({result:course[0]})
+}

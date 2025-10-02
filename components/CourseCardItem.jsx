@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BookOpen } from "lucide-react";
 import { RefreshCcwDotIcon } from "lucide-react";
+import Link from "next/link";
 
 const difficultyColors = {
   easy: "bg-emerald-100 text-emerald-700",
@@ -20,7 +21,7 @@ const difficultyColors = {
 };
 
 const CourseCardItem = ({ course }) => {
-  const { topic, difficultyLevel, courseLayout, status } = course;
+  const { topic, difficultyLevel, courseLayout, status, courseId } = course;
 
   return (
     <Card className="w-full h-full flex flex-col border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-200 rounded-xl overflow-hidden">
@@ -77,12 +78,14 @@ const CourseCardItem = ({ course }) => {
         
         : 
         
+        <Link href={`/course/${courseId}`}>
         <Button
           variant="default"
           className="w-full bg-blue-600 hover:bg-blue-700 text-white"
         >
           View Full Course
         </Button>
+        </Link>
         
         }
       </CardFooter>
